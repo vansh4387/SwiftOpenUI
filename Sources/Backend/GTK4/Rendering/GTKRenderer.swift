@@ -178,6 +178,8 @@ extension Text: GTKRenderable, GTKDescribable {
     public func gtkCreateWidget() -> OpaquePointer {
         let label = gtk_label_new(content)!
 
+        gtkMarkHostedNodeKind(label, kind: .text)
+
         let gtkLabel = UnsafeMutableRawPointer(label)
 
         gtk_label_set_xalign(OpaquePointer(gtkLabel), 0.0)
