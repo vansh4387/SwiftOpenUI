@@ -177,12 +177,13 @@ func bindActionToCurrentEnvironment<T>(_ action: @escaping (T) -> Void) -> (T) -
 extension Text: GTKRenderable, GTKDescribable {
     public func gtkCreateWidget() -> OpaquePointer {
         let label = gtk_label_new(content)!
-        gtk_swift_label_set_xalign(label, 0)
-        gtk_swift_label_set_yalign(label, 0.5)
-        // SwiftUI Text wraps to intrinsic size — prevent GTK expansion.
-        gtk_widget_set_hexpand(label, 0)
-        gtk_widget_set_vexpand(label, 0)
-        gtkMarkHostedNodeKind(label, kind: .text)
+
+        let gtkLabel = UnsafeMutableRawPointer(label)
+
+        gtk_label_set_xalign(OpaquePointer(gtkLabel), 0.0)
+        gtk_label_set_yalign(OpaquePointer(gtkLabel), 0.5)
+        gtk_label_set_wrap(OpaquePointer(gtkLabel), 1)
+
         return opaqueFromWidget(label)
     }
 
